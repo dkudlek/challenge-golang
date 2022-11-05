@@ -66,7 +66,13 @@
 
 package main
 
-import "sort"
+import (
+	"fmt"
+	"math"
+	"math/rand"
+	"sort"
+	"time"
+)
 
 var naive = 0
 var dynamic = 1
@@ -257,6 +263,70 @@ func sanity_check() {
 	println("[SUCCESS] Sanity check: Single Element")
 }
 
+func to_time(duration time.Duration) string {
+	hours := int(math.Mod((duration.Seconds() / 60.0), 60.0))
+	minutes := int(math.Floor(duration.Seconds() / 60.0))
+	seconds := int(math.Floor(duration.Seconds()))
+	micros := int(duration.Microseconds() % 1000000)
+
+	return fmt.Sprintf("%02d:%02d:%02d.%06d",
+		hours,
+		minutes,
+		seconds,
+		micros)
+}
+
+func execute_test(list []int) {
+	println("[RUN    ] Execute test: naive approach")
+	naive_start := time.Now()
+	naive_result := naive_approach(list)
+	naive_duration := time.Since(naive_start)
+	fmt.Printf(
+		"[SUCCESS] Execute test: naive approach with '%v'\n",
+		naive_result,
+	)
+
+	println("[RUN    ] Execute test: dynamic approach")
+
+	dynamic_start := time.Now()
+	dynamic_result := dynamic_approach(list)
+	dynamic_duration := time.Since(dynamic_start)
+	fmt.Printf(
+		"[SUCCESS] Execute test: dynamic approach with '%v'\n",
+		dynamic_result,
+	)
+
+	fmt.Printf(
+		"[EVAL   ] Naive Approach took   %s || %12d us\n",
+		to_time(naive_duration),
+		naive_duration.Microseconds(),
+	)
+	fmt.Printf(
+		"[EVAL   ] Dynamic Approach took %s || %12d us\n",
+		to_time(dynamic_duration),
+		dynamic_duration.Microseconds(),
+	)
+
+	println(naive_result == dynamic_result)
+}
+
+func execute_random_test(n int) {
+	/* Random Test Suite */
+	println("[#######]")
+	println("[RUN    ] Execute random test")
+	for i := 0; i < n; i++ {
+		fmt.Printf("[RUN    ] Execute random test %d\n", i)
+
+		list := []int{}
+		for j := 0; j < 10000; j++ {
+			list = append(list, rand.Intn(int(math.Pow(2, 32))))
+
+		}
+		execute_test(list)
+	}
+}
+
 func main() {
 	sanity_check()
+	execute_random_test(3)
 }
