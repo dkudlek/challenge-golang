@@ -338,8 +338,8 @@ func execute_random_test(n int) {
 
 func main() {
 	fmt.Println(os.Args)
-	file_with_overlap := flag.String("file-with-overlap", "overlap.csv", "")
-	file_without_overlap := flag.String("file-without-overlap", "no_overlap.csv", "")
+	file_with_overlap := flag.String("file-with-overlap", "overlapping_intervals.csv", "")
+	file_without_overlap := flag.String("file-without-overlap", "no_overlapping_intervals.csv", "")
 	number_of_rand_runs := flag.Int("number-of-rand-runs", 0, "")
 	flag.Parse()
 

@@ -67,10 +67,15 @@
 package main
 
 import (
+	"encoding/csv"
+	"flag"
 	"fmt"
+	"log"
 	"math"
 	"math/rand"
+	"os"
 	"sort"
+	"strconv"
 	"time"
 )
 
@@ -326,7 +331,45 @@ func execute_random_test(n int) {
 	}
 }
 
+func readCsvFile(filePath string) []int {
+	f, err := os.Open(filePath)
+	if err != nil {
+		log.Fatal("Unable to read input file "+filePath, err)
+	}
+	defer f.Close()
+
+	csvReader := csv.NewReader(f)
+	records, err := csvReader.ReadAll()
+	if err != nil {
+		log.Fatal("Unable to parse file as CSV for "+filePath, err)
+	}
+	list := []int{}
+	for idx, itr := range records {
+		if idx == 0 {
+			continue
+		}
+		val, err := strconv.Atoi(itr[0])
+		if err != nil {
+			log.Fatal("low value is not a number")
+		}
+		list = append(list, val)
+
+	}
+
+	return list
+}
+
 func main() {
+	fmt.Println(os.Args)
+	file := flag.String("file", "level_buildings.csv", "")
+	number_of_rand_runs := flag.Int("number-of-rand-runs", 0, "")
+	flag.Parse()
+
 	sanity_check()
-	execute_random_test(3)
+	println("[#######]")
+	println("[RUN    ] Test with overlap")
+	buildings := readCsvFile(*file)
+	execute_test(buildings)
+
+	execute_random_test(*number_of_rand_runs)
 }
