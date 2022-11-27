@@ -41,7 +41,7 @@ func TestChainReaction(t *testing.T) {
 			want:           50,
 		},
 		{
-			name:           "Tow in a row",
+			name:           "Two in a row",
 			fun_values:     []int64{50, 40},
 			pointer_values: []int64{0, 1},
 			want:           50,
@@ -59,13 +59,7 @@ func TestChainReaction(t *testing.T) {
 			want:           150,
 		},
 		{
-			name:           "Mote Multi subtree",
-			fun_values:     []int64{100, 90, 80, 70, 60, 50, 40, 30, 20, 10},
-			pointer_values: []int64{0, 1, 0, 3, 0, 5, 0, 7, 0, 9},
-			want:           300,
-		},
-		{
-			name:           "Mote Multi subtree",
+			name:           "More Multi subtree",
 			fun_values:     []int64{100, 90, 80, 70, 60, 50, 40, 30, 20, 10},
 			pointer_values: []int64{0, 1, 0, 3, 0, 5, 0, 7, 0, 9},
 			want:           300,
